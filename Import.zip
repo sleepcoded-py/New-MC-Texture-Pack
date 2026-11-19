@@ -1,0 +1,27 @@
+# gen_pack.py  -> pip install pillow ; python gen_pack.py
+import os, json, random
+from PIL import Image
+
+PACK_NAME = "ProceduralPack"
+PACK_FORMAT = 46          # 1.21.4 = 46, 1.21.5 = 55, etc.
+S = 16
+OUT = PACK_NAME
+
+def path(name, folder="block"):
+    return os.path.join(OUT, "assets/minecraft/textures", folder, name + ".png")
+
+def save(img, p):
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    img.save(p)
+
+def clamp(v): return max(0, min(255, int(v)))
+
+def noise(color, vary=12, seed=0, alpha=255):
+    rnd = random.Random(seed)
+    img = Image.new("RGBA", (S, S))
+    px = img.load()
+    for y in range(S):
+        for x in range(S):
+            d = rnd.randint(-vary, vary)
+            px[x, y] = (clamp(color[0]+d), clamp(color[1]+d), clamp(color[2]+d), alpha)
+    return img
