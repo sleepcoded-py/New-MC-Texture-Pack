@@ -1,0 +1,82 @@
+def planks(color, seed):
+    img = noise(color, 10, seed)
+    px = img.load()
+    rnd = random.Random(seed + 99)
+    for y in range(S):
+        if y % 4 == 3:
+            for x in range(S):
+                r, g, b, a = px[x, y]
+                px[x, y] = (clamp(r-45), clamp(g-45), clamp(b-45), a)
+        else:
+            for x in range(S):
+                if rnd.random() < 0.22:
+                    r, g, b, a = px[x, y]
+                    px[x, y] = (clamp(r-20), clamp(g-20), clamp(b-20), a)
+    return img
+
+def log_side(color, seed):
+    img = noise(color, 8, seed)
+    px = img.load()
+    for x in range(S):
+        if x % 3 == 0:
+            for y in range(S):
+                r, g, b, a = px[x, y]
+                px[x, y] = (clamp(r-35), clamp(g-30), clamp(b-30), a)
+    return img
+
+def log_top(color, seed):
+    img = noise(color, 8, seed)
+    px = img.load()
+    cx = cy = 7.5
+    for y in range(S):
+        for x in range(S):
+            d = ((x-cx)**2 + (y-cy)**2) ** 0.5
+            if int(d) % 2 == 0:
+                r, g, b, a = px[x, y]
+                px[x, y] = (clamp(r-25), clamp(g-20), clamp(b-20), a)
+    return img
+
+def leaves(color, seed):
+    rnd = random.Random(seed)
+    img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    px = img.load()
+    for y in range(S):
+        for x in range(S):
+            if rnd.random() < 0.88:
+                d = rnd.randint(-25, 25)
+                px[x, y] = (clamp(color[0]+d), clamp(color[1]+d), clamp(color[2]+d), 255)
+    return img
+
+def ore(base, gem, seed):
+    img = noise(base, 10, seed)
+    px = img.load()
+    rnd = random.Random(seed + 7)
+    for _ in range(5):
+        cx, cy = rnd.randint(1, 14), rnd.randint(1, 14)
+        for dy in range(-1, 2):
+            for dx in range(-1, 2):
+                x, y = cx+dx, cy+dy
+                if 0 <= x < S and 0 <= y < S and (abs(dx)+abs(dy) < 2):
+                    d = rnd.randint(-18, 18)
+                    px[x, y] = (clamp(gem[0]+d), clamp(gem[1]+d), clamp(gem[2]+d), 255)
+    return img
+
+def bricks(color, mortar, seed):
+    img = noise(color, 10, seed)
+    px = img.load()
+    for y in range(S):
+        for x in range(S):
+            if y % 4 == 3 or (x + (4 if (y//4) % 2 else 0)) % 8 == 7:
+                px[x, y] = (mortar[0], mortar[1], mortar[2], 255)
+    return img
+
+def glass(color, seed):
+    img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    px = img.load()
+    for x in range(S):
+        px[x, 0] = px[x, 1] = (color[0], color[1], color[2], 210)
+        px[x, 14] = px[x, 15] = (color[0], color[1], color[2], 210)
+    for y in range(S):
+        px[0, y] = px[1, y] = (color[0], color[1], color[2], 210)
+        px[14, y] = px[15, y] = (color[0], color[1], color[2], 210)
+    return img
