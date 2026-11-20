@@ -1,0 +1,9 @@
+img = Image.new("RGBA", (182, 22), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+for i in range(9):
+    x = 1 + i * 20
+    d.rectangle([x, 1, x + 19, 20], fill=(30, 30, 30, 190), outline=(220, 220, 220, 220))
+save(img, "gui/sprites/hud", "hotbar")
+
+img = Image.new("RGBA", (24, 24), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+d.rectangle([0, 0, 23, 23], outline=(255, 255, 255, 255), width=2)
+save(img, "gui/sprites/hud", "hotbar_selection")
