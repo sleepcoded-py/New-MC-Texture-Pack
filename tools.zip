@@ -1,0 +1,26 @@
+def tool(kind, head):
+    img = new(); d = ImageDraw.Draw(img)
+    for i in range(10):
+        x, y = 3 + i, 13 - i
+        d.point((x, y), fill=HANDLE + (255,))
+        d.point((x + 1, y), fill=HANDLE + (255,))
+    h = head + (255,)
+    if kind == "pickaxe":
+        d.line([(6,4),(13,2)], fill=h, width=2)
+        d.line([(6,4),(6,6)], fill=h, width=2)
+        d.line([(13,2),(13,4)], fill=h, width=2)
+    elif kind == "axe":
+        d.polygon([(9,2),(14,3),(14,7),(9,6)], fill=h)
+    elif kind == "shovel":
+        d.rectangle([10,2,13,5], fill=h)
+    elif kind == "hoe":
+        d.rectangle([9,2,14,3], fill=h)
+        d.rectangle([13,2,14,5], fill=h)
+    elif kind == "sword":
+        d.line([(7,10),(14,3)], fill=h, width=2)
+        d.line([(10,5),(13,8)], fill=HANDLE + (255,), width=2)
+    return img
+
+for name, col in MATS.items():
+    for kind in ("pickaxe", "axe", "shovel", "hoe", "sword"):
+        save(tool(kind, col), "item", f"{name}_{kind}")
