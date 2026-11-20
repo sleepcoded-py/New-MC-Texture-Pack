@@ -1,0 +1,80 @@
+def ingot(col):
+    img = new(); d = ImageDraw.Draw(img)
+    d.rectangle([3,6,12,10], fill=col+(255,))
+    d.line([(4,7),(11,7)], fill=shade(col,45))
+    d.line([(4,9),(11,9)], fill=shade(col,-45))
+    return img
+
+def gem(col):
+    img = new(); d = ImageDraw.Draw(img)
+    d.polygon([(8,2),(13,7),(8,14),(3,7)], fill=col+(255,))
+    d.polygon([(8,2),(11,6),(8,9),(5,6)], fill=shade(col,50))
+    return img
+
+def dust(col, seed=1):
+    rnd = random.Random(seed); img = new(); d = ImageDraw.Draw(img)
+    for _ in range(30):
+        x, y = rnd.randint(3,12), rnd.randint(4,12)
+        d.point((x,y), fill=shade(col, rnd.randint(-30,40)))
+    return img
+
+def ball(col):
+    img = new(); d = ImageDraw.Draw(img)
+    d.ellipse([3,3,12,12], fill=col+(255,))
+    d.ellipse([5,5,8,8], fill=shade(col,45))
+    return img
+
+def stick():
+    img = new(); d = ImageDraw.Draw(img)
+    d.line([(4,12),(11,4)], fill=HANDLE+(255,), width=2)
+    return img
+
+def seed(col):
+    img = new(); d = ImageDraw.Draw(img)
+    for i,(x,y) in enumerate([(5,10),(8,7),(10,11),(12,8),(6,6)]):
+        d.ellipse([x-1,y-1,x+1,y+1], fill=shade(col,(i%2)*30))
+    return img
+
+def sheet(col):
+    img = new(); d = ImageDraw.Draw(img)
+    d.rectangle([3,3,12,12], fill=col+(255,), outline=shade(col,-40))
+    return img
+
+def arrow():
+    img = new(); d = ImageDraw.Draw(img)
+    d.line([(3,12),(11,4)], fill=HANDLE+(255,))
+    d.polygon([(11,2),(13,5),(10,6)], fill=(200,200,200,255))
+    d.polygon([(2,11),(5,13),(3,14)], fill=(230,230,230,255))
+    return img
+
+def bucket():
+    img = new(); d = ImageDraw.Draw(img)
+    d.polygon([(4,5),(12,5),(11,13),(5,13)], fill=(180,180,180,255), outline=(120,120,120,255))
+    d.line([(6,6),(6,12)], fill=(230,230,230,255))
+    return img
+
+SPECS = {
+    "iron_ingot": (ingot, (216,216,216)), "gold_ingot": (ingot, (240,200,60)),
+    "copper_ingot": (ingot, (200,120,80)), "netherite_ingot": (ingot, (70,60,66)),
+    "brick": (ingot, (170,90,70)), "nether_brick": (ingot, (70,40,45)),
+    "diamond": (gem, (90,220,220)), "emerald": (gem, (60,200,110)),
+    "lapis_lazuli": (gem, (40,70,190)), "amethyst_shard": (gem, (180,120,220)),
+    "quartz": (gem, (235,230,220)), "melon_slice": (gem, (140,180,60)),
+    "carrot": (gem, (230,130,40)),
+    "coal": (dust, (40,40,40)), "charcoal": (dust, (60,50,45)),
+    "redstone": (dust, (200,40,30)), "glowstone_dust": (dust, (240,220,150)),
+    "gunpowder": (dust, (120,120,120)), "blaze_powder": (dust, (230,160,40)),
+    "sugar": (dust, (240,240,240)),
+    "iron_nugget": (ball, (216,216,216)), "gold_nugget": (ball, (240,200,60)),
+    "slime_ball": (ball, (120,200,110)), "magma_cream": (ball, (220,140,60)),
+    "ender_pearl": (ball, (60,180,160)), "eye_of_ender": (ball, (60,190,170)),
+    "clay_ball": (ball, (160,164,176)), "snowball": (ball, (240,250,250)),
+    "apple": (ball, (200,40,40)), "potato": (ball, (200,170,110)),
+    "beetroot": (ball, (170,40,60)),
+    "wheat_seeds": (seed, (140,160,60)), "wheat": (seed, (200,180,70)),
+    "paper": (sheet, (240,240,235)),
+    "stick": (stick, None), "arrow": (arrow, None), "bucket": (bucket, None),
+}
+
+for name, (fn, arg) in SPECS.items():
+    save(fn() if arg is None else fn(arg), "item", name)
