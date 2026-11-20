@@ -1,0 +1,18 @@
+def effect(base, glyph):
+    img = Image.new("RGBA", (18, 18), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+    d.rounded_rectangle([1, 1, 16, 16], radius=4, fill=base + (235,), outline=(0, 0, 0, 230))
+    g = (255, 255, 255, 255)
+    if glyph == "up":
+        d.polygon([(9,3),(14,9),(11,9),(11,15),(7,15),(7,9),(4,9)], fill=g)
+    elif glyph == "down":
+        d.polygon([(9,15),(14,9),(11,9),(11,3),(7,3),(7,9),(4,9)], fill=g)
+    elif glyph == "plus":
+        d.rectangle([7,4,10,14], fill=g); d.rectangle([4,7,14,10], fill=g)
+    elif glyph == "drop":
+        d.polygon([(9,3),(14,11),(4,11)], fill=g); d.ellipse([4,9,14,15], fill=g)
+    elif glyph == "eye":
+        d.ellipse([3,6,15,12], fill=g); d.ellipse([7,7,11,11], fill=base + (255,))
+    elif glyph == "shield":
+        d.polygon([(9,3),(15,6),(14,13),(9,15),(4,13),(3,6)], fill=g)
+    elif glyph == "flame":
+        d.polygon([(9
